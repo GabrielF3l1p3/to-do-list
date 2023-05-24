@@ -116,3 +116,19 @@ button {
     box-shadow: 0px 0px 5px rgb(3, 214, 3);
     color: rgb(10, 133, 10);
 }
+
+@media (max-width: 355px) {
+    html {
+        font-size: 55.5%;
+    }
+
+    section {
+        width: 30rem;
+
+    }
+
+    li {
+        width: 30rem;
+
+    }
+}
