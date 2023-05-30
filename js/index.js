@@ -32,25 +32,30 @@ function creatTask(textInput) {
 function createBtns(li) {
     li.innerText += ' ';
 
+    const div = document.createElement('div');
+
+    li.appendChild(div);
+
     const btnCheck = criaBtn();
     btnCheck.innerHTML = '<img src="img/verificar.svg">'
     btnCheck.setAttribute('class', 'checked');
-    li.appendChild(btnCheck);
+    div.appendChild(btnCheck);
     
     const btnDel = criaBtn();
     btnDel.innerHTML = '<img src="img/cruz.svg">';
     btnDel.setAttribute('class', 'delete');
-    li.appendChild(btnDel);
+    div.appendChild(btnDel);
     
     btnCheck.addEventListener('click', function() {
         li.classList.toggle('check');
+        saveStyle();
         saveTask();
-
     });
 
     btnDel.addEventListener('click', function() {
-        btnDel.parentElement.remove();
+        div.parentElement.remove();
         saveTask();
+        saveStyle();
     })
 }
 
@@ -80,6 +85,40 @@ function saveTask() {
     localStorage.setItem('tasksSave', taskJSON);
 }
 
+function saveStyle() {
+    const tasks = ul.querySelectorAll('li');
+    const styList = [];
+
+    for(let task of tasks) {
+        let sty = task.classList.contains('check');
+        styList.push(sty);
+    }
+
+    
+    const styJSON = JSON.stringify(styList);
+    localStorage.setItem('styleSave', styJSON);
+}
+
+function addStyleSave() {
+    const tasks = ul.querySelectorAll('li');
+    const sty = localStorage.getItem('styleSave');
+    const styList = JSON.parse(sty);
+    const listCheck = [];
+    
+    for (let i = 0; i < styList.length; i++) {
+        if (styList[i] === true) {
+          listCheck.push(i);
+        }
+    }
+
+    for (let checkId of listCheck) {
+        let liCheck = tasks[checkId]
+        liCheck.classList.add('check');
+    }
+
+}
+
+
 function addTaskSave() {
     const tasks = localStorage.getItem('tasksSave');
     const taskList = JSON.parse(tasks);
@@ -88,4 +127,5 @@ function addTaskSave() {
     }
 }
 
-addTaskSave()
+addTaskSave();
+addStyleSave();
